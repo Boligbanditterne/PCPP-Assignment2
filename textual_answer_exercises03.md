@@ -2,33 +2,32 @@
 
 ### 3.1.1
 
+*List the possible actions in the executions of the program. Classify the actions as: variable access, syn-
+chronization, or other. You may assign numbers to operations in the program to easily refer to them in this
+exercise and the ones below.*
+
 **Variable Access**
-line 1, 3, 4, 12
+$$count = 0;$$
+$$"count="+count$$
+$$int temp = count;$$
+$$count = temp + 1;$$
 
 **Synchronization**
-line 6, 7, 9, 10
+$$t1.start();$$
+$$t2.start();$$
+$$t1.join();$$
+$$t2.join();$$
 
 **Other**
-12
+$$CountingThread t1 = new CountingThread();$$
+$$CountingThread t2 = new CountingThread();$$
+$$System.out.println$$
 
-
-### 3.1.2
-
-1. count = 0;
-
-2. CountingThread t1 = new CountingThread();
-
-3. CountingThread t2 = new CountingThread();
-
-4.  ┌──> t1.start(); ──> t1.join() ──┐
-    ┤                                ├──> 
-    └──> t2.start(); ──> t2.join() ──┘
-
-5. System.out.println("count="+count);
-
-### 3.1.3
 
 ### 3.1.2:
+
+*Define the happens-before order set containing action pairs obtained from the program order rule. Is this set
+the same for all possible program executions?*
 
 $$
 HB^m_{po} = {m(count) -> m(t1.start()) -> m(t2.start()) -> m(t1.join()) -> m(t2.join) -> m(print)}
@@ -45,6 +44,9 @@ $$
 It is always the same  
 ### 3.1.3:
 
+*Define the happens-before order set containing action pairs obtained from the thread start rule and the thread
+termination rule. Is this set the same for all possible program executions?*
+
 $$
 HB_{start} = {m(t1.start()) -> t1(1),  m(t2.start()) -> t2(1)}
 $$
@@ -56,6 +58,7 @@ $$
 It is always the same.
 
 ### 3.1.4:
+*Define the set of all possible synchronization orders for this program.*
 
 $$
 {m(t1.start()),  m(t2.start()),  m(t1.join()),  m(t2.join())}
@@ -63,10 +66,17 @@ $$
 
 There is no other way to order them, as they have to be consistent with program order.
 
-### 3.1.5:  
-There does not exists a happens before relationsship between for example t1(1) -> t2(2) nor t2(2) -> t1(1), which results in it not being immune to data races. The variable is also non-volitile
+### 3.1.5:
+*how, using the Java memory model, that this program contains data races.*
 
-3.2.1:  
+There does not exists a happens before relationsship between for example t1(1) -> t2(1) nor t2(1) -> t1(1), which results in it not being immune to data races. The variable is also non-volitile
+
+### 3.1.6
+
+### 3.2
+
+### 3.2.1:
+
 It is no correctly synchronized, as it contains data races. If we look at t1(3) it does a write access to list, meanwhile t2(5) is doing a read to the same list. The list is non-volitile which makes it conflicting. Only one method is synchronized, so t1 gets a lock, while t2 does not acquire that lock. This means there will be a data race.
 
 ### 3.2.2
